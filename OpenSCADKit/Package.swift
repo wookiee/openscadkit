@@ -23,7 +23,12 @@ let package = Package(
             name: "COpenSCAD",
             dependencies: ["OpenSCAD"],
             path: "Sources/COpenSCAD",
-            publicHeadersPath: "include"
+            publicHeadersPath: "include",
+            linkerSettings: [
+                .linkedLibrary("z"),
+                .linkedLibrary("xml2"),
+                .linkedLibrary("c++"),
+            ]
         ),
 
         // OpenSCAD XCFramework (pre-built static library)
