@@ -11,13 +11,41 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
-        // Public Swift API for OpenSCAD rendering
+        // === Individual Modules ===
+
+        // Core engine: SCAD parsing, rendering, mesh data
+        .library(
+            name: "OpenSCADCore",
+            targets: ["OpenSCADCore"]
+        ),
+
+        // Metal rendering: CSG preview, mesh display
+        .library(
+            name: "OpenSCADMetal",
+            targets: ["OpenSCADMetal"]
+        ),
+
+        // === Umbrella Module ===
+
+        // Full framework: includes Core + Metal
+        // Use this for convenience; `import OpenSCADKit` gives you everything
         .library(
             name: "OpenSCADKit",
             targets: ["OpenSCADKit"]
         ),
     ],
     targets: [
+        // === Binary Target ===
+
+        // OpenSCAD XCFramework (pre-built static library)
+        // Build with: BuildScripts/build-all.sh && BuildScripts/create-xcframework.sh
+        .binaryTarget(
+            name: "OpenSCAD",
+            path: "Frameworks/OpenSCAD.xcframework"
+        ),
+
+        // === C Bridge ===
+
         // C bridge layer - wraps the C API from the XCFramework
         .target(
             name: "COpenSCAD",
@@ -28,28 +56,47 @@ let package = Package(
                 .linkedLibrary("z"),
                 .linkedLibrary("xml2"),
                 .linkedLibrary("c++"),
+                .linkedFramework("CoreGraphics"),
+                .linkedFramework("ImageIO"),
             ]
         ),
 
-        // OpenSCAD XCFramework (pre-built static library)
-        // Build with: OpenSCADKit/BuildScripts/build-all.sh && OpenSCADKit/BuildScripts/create-xcframework.sh
-        .binaryTarget(
-            name: "OpenSCAD",
-            path: "Frameworks/OpenSCAD.xcframework"
+        // === OpenSCADCore ===
+
+        // Core engine: OpenSCADEngine, RenderResult, Mesh types
+        .target(
+            name: "OpenSCADCore",
+            dependencies: ["COpenSCAD"],
+            path: "Sources/OpenSCADCore"
         ),
 
-        // Public Swift API
+        // === OpenSCADMetal ===
+
+        // Metal rendering: CSG preview, mesh visualization
+        .target(
+            name: "OpenSCADMetal",
+            dependencies: ["OpenSCADCore"],
+            path: "Sources/OpenSCADMetal",
+            resources: [
+                .process("Shaders")
+            ]
+        ),
+
+        // === Umbrella Module ===
+
+        // Re-exports OpenSCADCore and OpenSCADMetal
         .target(
             name: "OpenSCADKit",
-            dependencies: ["COpenSCAD"],
+            dependencies: ["OpenSCADCore", "OpenSCADMetal"],
             path: "Sources/OpenSCADKit"
         ),
 
-        // Tests
+        // === Tests ===
+
         .testTarget(
-            name: "OpenSCADKitTests",
-            dependencies: ["OpenSCADKit"],
-            path: "Tests/OpenSCADKitTests"
+            name: "OpenSCADCoreTests",
+            dependencies: ["OpenSCADCore"],
+            path: "Tests/OpenSCADCoreTests"
         ),
     ]
 )

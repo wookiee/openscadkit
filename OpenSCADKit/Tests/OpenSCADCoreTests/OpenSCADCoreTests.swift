@@ -1,12 +1,12 @@
 //
-//  OpenSCADKitTests.swift
-//  OpenSCADKit
+//  OpenSCADCoreTests.swift
+//  OpenSCADCore
 //
-//  Tests for the OpenSCADKit Swift API.
+//  Tests for the OpenSCADCore Swift API.
 //
 
 import Testing
-@testable import OpenSCADKit
+@testable import OpenSCADCore
 
 @Suite(.serialized)  // OpenSCAD internals are not thread-safe
 struct OpenSCADKitTests {

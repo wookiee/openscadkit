@@ -6,3 +6,4 @@ BuildScripts/*.log
 
 # macOS
 .DS_Store
+.build/
