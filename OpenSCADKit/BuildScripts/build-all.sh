@@ -22,8 +22,16 @@ PLATFORM_ARG="$1"
 DEPS=(
     "double-conversion"
     "boost"
+    "eigen"
+    "gmp"
+    "mpfr"
+    "cgal"
+    "libzip"
     "freetype"
     "harfbuzz"
+    "expat"
+    "fontconfig"
+    "glib-shim"
     "manifold"
 )
 

@@ -38,7 +38,7 @@ JOBS=$(sysctl -n hw.ncpu)
 
 # Dependency versions (use stable releases)
 BOOST_VERSION="1.84.0"
-FREETYPE_VERSION="2.13.2"
+FREETYPE_VERSION="2.14.1"
 HARFBUZZ_VERSION="8.3.0"
 DOUBLE_CONVERSION_VERSION="3.3.0"
 MANIFOLD_VERSION="3.3.2"

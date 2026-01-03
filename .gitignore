@@ -105,5 +105,4 @@ scripts/run-clang-tidy-cached
 
 # OpenSCADKit build artifacts
 OpenSCADKit/build/
-OpenSCADKit/Frameworks/OpenSCAD.xcframework/
 .swiftpm/

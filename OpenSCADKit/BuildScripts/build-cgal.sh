@@ -106,6 +106,16 @@ build_cgal_platform() {
     cmake --build . --parallel $JOBS
     cmake --install .
 
+    # Patch iterator.h for Clang 17+ / Boost 1.84+ compatibility
+    # See: https://github.com/CGAL/cgal/commit/0de060acd68
+    local iterator_h="$install_dir/include/CGAL/boost/graph/iterator.h"
+    if [ -f "$iterator_h" ]; then
+        if grep -q "this->base()" "$iterator_h" 2>/dev/null; then
+            log_info "Patching CGAL iterator.h for Clang 17+ compatibility..."
+            sed -i '' 's/return (! (this->base() == nullptr));/return (g != nullptr);/g' "$iterator_h"
+        fi
+    fi
+
     log_success "Built CGAL for $platform-$arch"
 }
 

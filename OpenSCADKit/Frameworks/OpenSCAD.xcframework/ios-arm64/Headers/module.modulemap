@@ -1,0 +1,4 @@
+module OpenSCAD {
+    header "openscad/OpenSCAD.h"
+    export *
+}
