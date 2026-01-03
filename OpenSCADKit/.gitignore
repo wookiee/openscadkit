@@ -1,0 +1,8 @@
+# Build artifacts
+build/
+
+# Build logs
+BuildScripts/*.log
+
+# macOS
+.DS_Store

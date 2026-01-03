@@ -11,6 +11,9 @@
 #ifndef _WIN32
 #include <sys/wait.h>
 #endif
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
 
 #include <boost/regex.hpp>
 
@@ -36,8 +39,10 @@ void handle_dep(const std::string& filename)
   dependencies.insert(dep);
 
   if (make_command && !fs::exists(filepath)) {
+#if !defined(__APPLE__) || !TARGET_OS_IPHONE
     // This should only happen from command-line execution.
     // If changed, add an alternate error-reporting process.
+    // Note: system() is not available on iOS
     auto cmd = STR(make_command, " '", boost::regex_replace(filename, boost::regex("'"), "'\\''"), "'");
     errno = 0;
     int res = system(cmd.c_str());
@@ -67,6 +72,7 @@ void handle_dep(const std::string& filename)
     }
 
     // Otherwise, success!
+#endif  // !iOS
   }
 }
 

@@ -4,7 +4,15 @@
 #include <cassert>
 #include <cstddef>
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_IPHONE
+#include <CoreGraphics/CoreGraphics.h>
+#include <ImageIO/ImageIO.h>
+#else
 #include <ApplicationServices/ApplicationServices.h>
+#endif
+#endif
 
 static CGDataConsumerCallbacks dc_callbacks;
 
@@ -69,7 +77,12 @@ bool write_png(std::ostream& output, unsigned char *pixels, int width, int heigh
 
   const CFIndex fileImageIndex = 1;
   CFMutableDictionaryRef fileDict = nullptr;
+#if TARGET_OS_IPHONE
+  // On iOS 14+, use the UTType string identifier directly
+  CFStringRef fileUTType = CFSTR("public.png");
+#else
   CFStringRef fileUTType = kUTTypePNG;
+#endif
   // Create an image destination opaque reference for authoring an image file
   CGImageDestinationRef imageDest =
     CGImageDestinationCreateWithDataConsumer(dataconsumer, fileUTType, fileImageIndex, fileDict);

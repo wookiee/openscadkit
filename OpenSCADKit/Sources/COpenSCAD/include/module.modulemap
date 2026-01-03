@@ -1,0 +1,4 @@
+module COpenSCAD {
+    header "COpenSCAD.h"
+    export *
+}

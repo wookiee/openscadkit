@@ -102,3 +102,7 @@ tests/regression/export-pdf/centered.pdf
 tests/regression/export-pdf/simple-pdf.pdf
 scripts/run-clang-tidy-cached
 .clangd
+
+# OpenSCADKit build artifacts
+OpenSCADKit/build/
+.swiftpm/
