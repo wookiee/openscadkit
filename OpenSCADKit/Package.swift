@@ -33,6 +33,15 @@ let package = Package(
             name: "OpenSCADKit",
             targets: ["OpenSCADKit"]
         ),
+
+        // === CLI Tool ===
+
+        // Command-line tool for rendering SCAD files to STL
+        // macOS only - install with: swift build -c release && cp .build/release/openscad /usr/local/bin/
+        .executable(
+            name: "openscad",
+            targets: ["openscad"]
+        ),
     ],
     targets: [
         // === Binary Target ===
@@ -89,6 +98,15 @@ let package = Package(
             name: "OpenSCADKit",
             dependencies: ["OpenSCADCore", "OpenSCADMetal"],
             path: "Sources/OpenSCADKit"
+        ),
+
+        // === CLI Tool ===
+
+        // Command-line interface for OpenSCAD rendering
+        .executableTarget(
+            name: "openscad",
+            dependencies: ["OpenSCADCore"],
+            path: "Sources/openscad"
         ),
 
         // === Tests ===
